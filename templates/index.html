@@ -4,6 +4,8 @@
 
 <head>
     <title>MapiT</title>
+
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
@@ -22,220 +24,83 @@
             color: white;
         }
 
-        /* FULL SCREEN INTRO */
+        /* INTRO */
         #intro {
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle at center, #0f2027, #05080a);
+            background: radial-gradient(circle, #0f2027, #05080a);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            overflow: hidden;
             transition: opacity 1s ease, visibility 1s;
         }
 
-        /* BACKGROUND LIGHT SWEEP */
-        #intro::before {
-            content: "";
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(120deg, transparent, rgba(0, 198, 255, 0.15), transparent);
-            animation: sweep 4s linear infinite;
-        }
-
-        /* LOGO CONTAINER */
-        .intro-content {
-            text-align: center;
-            transform: scale(0.9);
-            animation: zoomIn 1.5s ease forwards;
-        }
-
-        /* TEXT STACK */
-        .intro-logo {
-            position: relative;
-            font-size: 70px;
-            letter-spacing: 4px;
-        }
-
-        /* OUTLINE TEXT */
-        .intro-logo .stroke {
-            color: transparent;
-            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
-        }
-
-        /* FILL TEXT */
-        .intro-logo .fill {
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: transparent;
-
-            background: linear-gradient(90deg, #00c6ff, #0072ff, #00e5ff);
-            background-size: 200% auto;
-
-            -webkit-background-clip: text;
-            background-clip: text;
-
-            opacity: 0;
-
-            animation:
-                reveal 2s ease forwards,
-                gradientMove 3s linear infinite 1s;
-        }
-
-        /* TAGLINE */
-        .intro-tag {
-            margin-top: 10px;
-            font-size: 14px;
-            letter-spacing: 2px;
-            color: rgba(255, 255, 255, 0.5);
-            opacity: 0;
-            animation: fadeIn 1.5s ease forwards 1.5s;
-        }
-
-        /* ANIMATIONS */
-        @keyframes reveal {
-            0% {
-                opacity: 0;
-                clip-path: inset(0 100% 0 0);
-            }
-
-            100% {
-                opacity: 1;
-                clip-path: inset(0 0 0 0);
-            }
-        }
-
-        @keyframes gradientMove {
-            0% {
-                background-position: 0% center;
-            }
-
-            100% {
-                background-position: 200% center;
-            }
-        }
-
-        @keyframes zoomIn {
-            to {
-                transform: scale(1);
-            }
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes sweep {
-            0% {
-                transform: translateX(-50%) rotate(25deg);
-            }
-
-            100% {
-                transform: translateX(50%) rotate(25deg);
-            }
-        }
-
-        /* EXIT */
         #intro.hide {
             opacity: 0;
             visibility: hidden;
         }
 
-        /* OPTIONAL: blur app initially */
-        body.loading #main-app {
-            filter: blur(8px);
-            transform: scale(1.02);
-            transition: 1s;
+        .intro-logo {
+            font-size: 70px;
+            letter-spacing: 4px;
+            position: relative;
         }
 
-        header {
-            text-align: center;
-            padding: 20px;
-            font-size: 28px;
-            font-weight: 600;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
+        .stroke {
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
         }
 
+        .fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: transparent;
+            background: linear-gradient(90deg, #00c6ff, #0072ff, #00e5ff);
+            background-size: 200%;
+            background-clip: content-box;
+            -webkit-background-clip: text;
+            animation: reveal 2s forwards, flow 3s linear infinite 1s;
+        }
+
+        @keyframes reveal {
+            from {
+                clip-path: inset(0 100% 0 0);
+            }
+
+            to {
+                clip-path: inset(0 0 0 0);
+            }
+        }
+
+        @keyframes flow {
+            from {
+                background-position: 0%;
+            }
+
+            to {
+                background-position: 200%;
+            }
+        }
+
+        /* HEADER */
         .logo-header {
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 22px 0;
-            background: linear-gradient(135deg, #0f2027, #203a43);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px);
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
         }
 
-        /* Container */
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        /* Minimal geometric logo mark */
-        .logo-mark {
-            width: 34px;
-            height: 34px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #00c6ff, #0072ff);
-            position: relative;
-            box-shadow: 0 0 12px rgba(0, 198, 255, 0.5);
-            transition: 0.4s;
-        }
-
-        /* Inner detail (gives premium feel) */
-        .logo-mark::after {
-            content: "";
-            position: absolute;
-            top: 7px;
-            left: 7px;
-            width: 20px;
-            height: 20px;
-            border-radius: 6px;
-            border: 2px solid rgba(255, 255, 255, 0.7);
-        }
-
-        /* Brand name */
         .logo-text .main {
-            font-size: 30px;
-            font-weight: 600;
-            letter-spacing: 1px;
-
-            background: linear-gradient(45deg, #00c6ff, #00e5ff, #0072ff);
+            font-size: 28px;
+            background: linear-gradient(45deg, #00c6ff, #00e5ff);
             background-clip: content-box;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-
-            text-shadow: 0 0 8px rgba(0, 198, 255, 0.4);
         }
 
-        /* Tagline */
-        .logo-text .tagline {
-            display: block;
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.6);
-            letter-spacing: 1.2px;
-        }
-
-        /* Hover animation */
-        .logo-container:hover .logo-mark {
-            transform: rotate(8deg) scale(1.1);
-            box-shadow: 0 0 20px rgba(0, 198, 255, 0.8);
-        }
-
-        .logo-container:hover .main {
-            text-shadow: 0 0 18px rgba(0, 198, 255, 0.7);
-        }
-
+        /* LAYOUT */
         .container {
             display: flex;
             gap: 20px;
@@ -247,20 +112,15 @@
             background: rgba(255, 255, 255, 0.1);
             padding: 20px;
             border-radius: 20px;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            position: relative;
-            z-index: 10;
         }
 
+        /* DROPDOWN */
         .dropdown {
             position: relative;
             margin-bottom: 15px;
         }
 
         .dropdown-btn {
-            display: flex;
-            justify-content: space-between;
             padding: 12px;
             border-radius: 12px;
             background: rgba(255, 255, 255, 0.15);
@@ -270,13 +130,13 @@
         .dropdown-menu {
             position: absolute;
             width: 100%;
-            background: rgba(20, 20, 20, 0.95);
+            background: #1a1a1a;
             border-radius: 12px;
-            margin-top: 8px;
+            margin-top: 6px;
             max-height: 0;
             overflow: hidden;
             opacity: 0;
-            transition: all 0.3s ease;
+            transition: 0.3s;
             z-index: 1000;
         }
 
@@ -286,11 +146,19 @@
             overflow-y: auto;
         }
 
+        .dropdown-menu::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .dropdown-menu::-webkit-scrollbar-thumb {
+            background: #00c6ff;
+            border-radius: 6px;
+        }
+
         .search-box {
             width: 100%;
             padding: 8px;
             border: none;
-            outline: none;
             background: #222;
             color: white;
         }
@@ -301,8 +169,7 @@
         }
 
         .dropdown-menu div:hover {
-            background: rgba(0, 198, 255, 0.3);
-            padding-left: 18px;
+            background: #00c6ff33;
         }
 
         button {
@@ -328,10 +195,6 @@
             border-radius: 10px;
         }
 
-        .leaflet-container {
-            background: #0f2027;
-        }
-
         @media(max-width:900px) {
             .container {
                 flex-direction: column;
@@ -343,27 +206,21 @@
         }
     </style>
 
+
 </head>
 
 <body>
+
     <div id="intro">
-        <div class="intro-content">
-            <h1 class="intro-logo">
-                <span class="stroke">MapiT</span>
-                <span class="fill">MapiT</span>
-            </h1>
-            <div class="intro-tag">Smart Route Navigator</div>
-        </div>
+        <h1 class="intro-logo">
+            <span class="stroke">MapiT</span>
+            <span class="fill">MapiT</span>
+        </h1>
     </div>
 
-
     <header class="logo-header">
-        <div class="logo-container">
-            <div class="logo-mark"></div>
-            <div class="logo-text">
-                <span class="main">MapiT</span>
-                <span class="tagline">Smart Route Navigator</span>
-            </div>
+        <div class="logo-text">
+            <span class="main">MapiT</span>
         </div>
     </header>
 
@@ -377,7 +234,7 @@
                         <span id="startText">Select Source</span>
                     </div>
                     <div class="dropdown-menu" id="startMenu">
-                        <input class="search-box" placeholder="Search..." onkeyup="filterCities(this,'startMenu')">
+                        <input class="search-box" onkeyup="filterCities(this,'startMenu')" placeholder="Search...">
                         {% for city in cities %}
                         <div onclick="selectCity('start','{{city}}')">{{city}}</div>
                         {% endfor %}
@@ -389,7 +246,7 @@
                         <span id="endText">Select Destination</span>
                     </div>
                     <div class="dropdown-menu" id="endMenu">
-                        <input class="search-box" placeholder="Search..." onkeyup="filterCities(this,'endMenu')">
+                        <input class="search-box" onkeyup="filterCities(this,'endMenu')" placeholder="Search...">
                         {% for city in cities %}
                         <div onclick="selectCity('end','{{city}}')">{{city}}</div>
                         {% endfor %}
@@ -418,42 +275,59 @@
         let selectedStart = "", selectedEnd = "", polyline, markers = [];
 
         fetch('/static/mp_boundry.geojson')
-            .then(res => res.json())
+            .then(r => r.json())
             .then(data => {
-                let boundary = L.geoJSON(data, { style: { color: "#00e5ff" } }).addTo(map);
-                map.fitBounds(boundary.getBounds());
-                map.setMaxBounds(boundary.getBounds());
+                let b = L.geoJSON(data, { style: { color: "#00e5ff" } }).addTo(map);
+                map.fitBounds(b.getBounds());
             });
 
         function toggleDropdown(id) {
-            document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('active'));
+            document.querySelectorAll('.dropdown-menu').forEach(m => {
+                if (m.id !== id) m.classList.remove('active');
+            });
             document.getElementById(id).classList.toggle('active');
         }
 
-        function selectCity(type, city) {
-            if (type === 'start') {
-                selectedStart = city;
-                document.getElementById("startText").innerText = city;
-            } else {
-                selectedEnd = city;
-                document.getElementById("endText").innerText = city;
+        document.addEventListener("click", function (e) {
+            if (!e.target.closest(".dropdown")) {
+                document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('active'));
             }
+        });
+
+        function selectCity(type, city) {
+            if (type === 'start') { selectedStart = city; startText.innerText = city; }
+            else { selectedEnd = city; endText.innerText = city; }
             document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('active'));
         }
 
         function filterCities(input, id) {
-            let filter = input.value.toLowerCase();
+            let f = input.value.toLowerCase();
             let items = document.getElementById(id).getElementsByTagName("div");
-
             for (let i = 0; i < items.length; i++) {
-                let txt = items[i].innerText.toLowerCase();
-                items[i].style.display = txt.includes(filter) ? "block" : "none";
+                items[i].style.display = items[i].innerText.toLowerCase().includes(f) ? "block" : "none";
             }
         }
 
+        const greenIcon = new L.Icon({
+            iconUrl: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32]
+        });
+
+        const blueIcon = new L.Icon({
+            iconUrl: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32]
+        });
+
+        const redIcon = new L.Icon({
+            iconUrl: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32]
+        });
         function getRoute() {
             if (!selectedStart || !selectedEnd) {
-                alert("Select both cities");
+                alert("Select cities");
                 return;
             }
 
@@ -462,32 +336,78 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ start: selectedStart, end: selectedEnd })
             })
-                .then(res => res.json())
+                .then(r => r.json())
                 .then(data => {
 
                     if (polyline) map.removeLayer(polyline);
                     markers.forEach(m => map.removeLayer(m));
                     markers = [];
 
-                    polyline = L.polyline(data.coordinates, { color: "#00e5ff", weight: 6 }).addTo(map);
+                    // DRAW REAL ROAD ROUTE
+                    polyline = L.polyline(data.coordinates, {
+                        color: "#00e5ff",
+                        weight: 6
+                    }).addTo(map);
+
                     map.fitBounds(polyline.getBounds());
 
-                    data.coordinates.forEach((c, i) => {
-                        let m = L.marker(c).addTo(map).bindPopup(data.path[i]);
-                        markers.push(m);
+                    // CUSTOM ICONS
+                    const greenIcon = new L.Icon({
+                        iconUrl: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 32]
                     });
 
-                    document.getElementById("info").innerHTML = "Distance: " + data.distance + " km";
-                    document.getElementById("steps").innerHTML = data.path.join(" ➝ ");
+                    const blueIcon = new L.Icon({
+                        iconUrl: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 32]
+                    });
+
+                    const redIcon = new L.Icon({
+                        iconUrl: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 32]
+                    });
+
+                    // CORRECT MARKERS USING CITY COORDS
+                    data.path.forEach((city, i) => {
+
+                        let coord = data.city_coords[i];  //FIXED LINE
+
+                        let icon;
+
+                        if (i === 0) {
+                            icon = greenIcon; // Source
+                        }
+                        else if (i === data.path.length - 1) {
+                            icon = redIcon; // Destination
+                        }
+                        else {
+                            icon = blueIcon; // Intermediate
+                        }
+
+                        let marker = L.marker(coord, { icon: icon })
+                            .addTo(map)
+                            .bindPopup(`<b>${city}</b>`);
+
+                        markers.push(marker);
+                    });
+
+                    // INFO DISPLAY
+                    document.getElementById("info").innerHTML =
+                        "Distance: " + data.distance + " km";
+
+                    document.getElementById("steps").innerHTML =
+                        data.path.join(" ➝ ");
                 });
         }
-        document.body.classList.add("loading");
 
+        // intro exit
         window.addEventListener("load", () => {
             setTimeout(() => {
                 document.getElementById("intro").classList.add("hide");
-                document.body.classList.remove("loading");
-            }, 2800);
+            }, 2500);
         });
     </script>
 
